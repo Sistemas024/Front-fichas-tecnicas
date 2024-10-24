@@ -35,7 +35,7 @@ const Register = () => {
 
     try {
       // Enviar datos al backend
-      const response = await fetch('http://localhost:5000/registro', {
+      const response = await fetch('https://backend-fichas-tecnicas.vercel.app/registro', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
