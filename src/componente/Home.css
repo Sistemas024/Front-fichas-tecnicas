@@ -1,0 +1,87 @@
+/* Home.css */
+
+/* Contenedor principal */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Título principal */
+.home-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Texto de bienvenida */
+.home-container p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Contenedor para PDF y botones */
+.pdf-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Imagen del proveedor */
+.proveedor-image {
+  max-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  transition: transform 0.3s;
+}
+
+.proveedor-image:hover {
+  transform: scale(1.05);
+}
+
+/* Botón de consulta */
+.pdf-container a {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.pdf-container a:hover {
+  background-color: #0056b3;
+}
+
+/* Botón de cierre de sesión */
+.logout-button {
+  margin-top: 20px;
+  padding: 8px 16px; /* Ajusté el padding para que sea más pequeño */
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  /* Centrando y ajustando tamaño */
+  width: fit-content; /* El botón solo ocupará lo necesario para el contenido */
+  min-width: 100px; /* Opcional: Establece un ancho mínimo */
+  align-self: center; /* Alineación si está dentro de un contenedor flex */
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}
