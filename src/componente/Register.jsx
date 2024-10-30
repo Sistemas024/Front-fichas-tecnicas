@@ -1,58 +1,60 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
-import '../componente/Register.css'; // Importar CSS específico del registro
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import '../componente/Register.css'; // Import specific CSS
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [dob, setDob] = useState(''); // Fecha de nacimiento
-  const [cedula, setCedula] = useState(''); // Cédula
+  const [nombre, setNombre] = useState('');
+  const [cedula, setCedula] = useState('');
   const [email, setEmail] = useState('');
-  const [cellular, setCellular] = useState(''); // Celular
-  const [city, setCity] = useState(''); // Ciudad
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate(); // Inicializar el hook de navegación
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if (!nombre || !cedula || !email || !password || !confirmPassword) {
+      setError('Todos los campos son obligatorios');
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden');
       return;
     }
 
-    // Crear el objeto de usuario
-    const newUser = {
-      name,
-      dob,
-      cedula,
-      email,
-      cellular,
-      city,
-      password,
-    };
+    const newUser = { nombre, cedula, email, password };
+
+    setIsSubmitting(true);
+    setError('');
+    setSuccess(false);
 
     try {
-      // Enviar datos al backend
-      const response = await fetch('https://backend-fichas-tecnicas.vercel.app/registro', {
+      const response = await fetch('http://localhost:5000/registro', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser),
       });
 
+      const data = await response.json();
       if (response.ok) {
         setSuccess(true);
         setError('');
-        // Opcionalmente, redirigir a otra página después del registro
-        // navigate('/login');
+        setNombre('');
+        setCedula('');
+        setEmail('');
+        setPassword('');
+        setConfirmPassword('');
       } else {
-        setError('Error al registrar usuario');
+        setError(data.message || 'Error al registrar usuario');
       }
     } catch (error) {
       setError('Error de conexión al servidor');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -62,12 +64,12 @@ const Register = () => {
         <h2>Registro</h2>
 
         <div className="form-group">
-          <label htmlFor="name">Usuario</label>
+          <label htmlFor="nombre">Usuario</label>
           <input
             type="text"
-            id="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            id="nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
             required
           />
         </div>
@@ -119,10 +121,13 @@ const Register = () => {
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">¡Registro exitoso!</p>}
 
-        <button type="submit">Registrarme</button>
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Registrando...' : 'Registrarme'}
+        </button>
+
         <button 
           type="button" 
-          onClick={() => navigate('/')} // Navegar de vuelta al Login
+          onClick={() => navigate('/')} // Navigate back to login or home
         >
           Volver
         </button>
